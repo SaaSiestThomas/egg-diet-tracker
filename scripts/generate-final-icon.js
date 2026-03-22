@@ -15,11 +15,11 @@ function createIcon() {
       <stop offset="100%" style="stop-color:#E0601E"/>
     </linearGradient>
 
-    <!-- Soft shadow behind egg -->
-    <filter id="eggShadow" x="-15%" y="-10%" width="130%" height="130%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="25" result="blur"/>
-      <feOffset dx="0" dy="14" result="offsetBlur"/>
-      <feFlood flood-color="rgba(0,0,0,0.22)" result="color"/>
+    <!-- Shadow behind egg - visible and grounding -->
+    <filter id="eggShadow" x="-20%" y="-15%" width="140%" height="145%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="35" result="blur"/>
+      <feOffset dx="0" dy="22" result="offsetBlur"/>
+      <feFlood flood-color="rgba(0,0,0,0.35)" result="color"/>
       <feComposite in="color" in2="offsetBlur" operator="in" result="shadow"/>
       <feMerge>
         <feMergeNode in="shadow"/>
@@ -59,29 +59,29 @@ function createIcon() {
   <circle cx="200" cy="180" r="280" fill="rgba(255,255,255,0.03)"/>
   <circle cx="820" cy="850" r="250" fill="rgba(0,0,0,0.03)"/>
 
-  <!-- Egg white -->
-  <ellipse cx="512" cy="490" rx="275" ry="330" fill="#FFFEF8" filter="url(#eggShadow)"/>
+  <!-- Egg white - perfectly centered -->
+  <ellipse cx="512" cy="512" rx="275" ry="330" fill="#FFFEF8" filter="url(#eggShadow)"/>
 
   <!-- Subtle edge definition on egg -->
-  <ellipse cx="512" cy="490" rx="273" ry="328" fill="none" stroke="rgba(220,200,170,0.15)" stroke-width="2"/>
+  <ellipse cx="512" cy="512" rx="273" ry="328" fill="none" stroke="rgba(220,200,170,0.15)" stroke-width="2"/>
 
   <!-- Egg white highlight (top-left area for 3D feel) -->
-  <ellipse cx="440" cy="380" rx="150" ry="170" fill="rgba(255,255,255,0.5)"/>
+  <ellipse cx="440" cy="400" rx="150" ry="170" fill="rgba(255,255,255,0.5)"/>
 
   <!-- Yolk - outer ring -->
-  <circle cx="512" cy="510" r="152" fill="url(#yolkOuter)"/>
+  <circle cx="512" cy="530" r="152" fill="url(#yolkOuter)"/>
 
   <!-- Yolk - inner -->
-  <circle cx="512" cy="508" r="135" fill="url(#yolkInner)"/>
+  <circle cx="512" cy="528" r="135" fill="url(#yolkInner)"/>
 
   <!-- Yolk highlight - large soft -->
-  <ellipse cx="475" cy="468" rx="55" ry="45" fill="rgba(255,255,255,0.28)"/>
+  <ellipse cx="475" cy="488" rx="55" ry="45" fill="rgba(255,255,255,0.28)"/>
 
   <!-- Yolk highlight - small sharp -->
-  <circle cx="456" cy="452" r="20" fill="rgba(255,255,255,0.45)"/>
+  <circle cx="456" cy="472" r="20" fill="rgba(255,255,255,0.45)"/>
 
   <!-- Tiny secondary highlight -->
-  <circle cx="440" cy="440" r="8" fill="rgba(255,255,255,0.55)"/>
+  <circle cx="440" cy="460" r="8" fill="rgba(255,255,255,0.55)"/>
 </svg>`);
 }
 
