@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🥚 Egg Diet Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Egg Diet Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -26,6 +28,10 @@
   --text-light: #7A6555;
   --shadow: rgba(139, 109, 75, 0.15);
   --shadow-strong: rgba(139, 109, 75, 0.25);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
 }
 
 html { scroll-behavior: smooth; }
@@ -36,6 +42,13 @@ body {
   color: var(--text);
   min-height: 100vh;
   overflow-x: hidden;
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* === BACKGROUND PATTERN === */
@@ -396,7 +409,7 @@ body::before {
 }
 
 .meal-item.completed .meal-icon::after {
-  content: '✓';
+  content: '\2713';
   position: absolute;
   bottom: -4px;
   right: -6px;
@@ -542,6 +555,8 @@ body::before {
   transition: border-color 0.2s, box-shadow 0.2s;
   outline: none;
   text-align: center;
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 .weight-input:focus {
@@ -612,7 +627,7 @@ body::before {
 }
 
 .rules-list li::before {
-  content: '•';
+  content: '\2022';
   font-weight: 800;
   flex-shrink: 0;
 }
@@ -628,7 +643,7 @@ body::before {
 }
 
 .day-card.all-done::after {
-  content: '🎉';
+  content: '\1F389';
   position: absolute;
   top: 12px;
   right: 12px;
@@ -781,202 +796,19 @@ body::before {
   background: white;
   outline: none;
   transition: border-color 0.2s;
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 .start-date-input:focus {
   border-color: var(--yolk);
 }
-
-/* === LOGIN MODAL === */
-.login-overlay {
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(135deg, #FFF8E7 0%, #FFFDF5 50%, #FFF3CD 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  animation: fadeIn 0.3s;
-}
-
-.login-card {
-  background: white;
-  border-radius: 32px;
-  padding: 2.5rem 2rem;
-  text-align: center;
-  max-width: 380px;
-  width: 90%;
-  animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 20px 60px rgba(139,109,75,0.2);
-}
-
-.login-card .login-egg { font-size: 3.5rem; margin-bottom: 0.5rem; }
-.login-card h2 {
-  font-family: 'Fredoka', sans-serif;
-  color: var(--yolk-deep);
-  font-size: 1.5rem;
-  margin-bottom: 0.3rem;
-}
-.login-card p {
-  color: var(--text-light);
-  font-size: 0.85rem;
-  margin-bottom: 1.2rem;
-}
-
-.login-input {
-  width: 100%;
-  border: 2px solid var(--eggshell-dark);
-  border-radius: 16px;
-  padding: 0.65rem 1rem;
-  font-family: 'Fredoka', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text);
-  background: var(--eggshell);
-  outline: none;
-  text-align: center;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  margin-bottom: 0.7rem;
-}
-
-.login-input:focus {
-  border-color: var(--yolk);
-  box-shadow: 0 0 0 3px rgba(245,166,35,0.15);
-}
-
-.login-btn {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  padding: 0.7rem 2.5rem;
-  border: none;
-  border-radius: 50px;
-  background: var(--yolk);
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: transform 0.2s, box-shadow 0.2s;
-  width: 100%;
-  margin-top: 0.3rem;
-}
-.login-btn:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 15px rgba(245,166,35,0.4);
-}
-.login-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.login-error {
-  font-family: 'Fredoka', sans-serif;
-  font-size: 0.8rem;
-  color: var(--coral);
-  margin-bottom: 0.5rem;
-  min-height: 1.2rem;
-}
-
-.login-toggle {
-  font-family: 'Fredoka', sans-serif;
-  font-size: 0.8rem;
-  color: var(--text-light);
-  margin-top: 1rem;
-}
-
-.login-toggle button {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 700;
-  font-size: 0.8rem;
-  color: var(--yolk-deep);
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-decoration: underline;
-}
-.login-toggle button:hover { color: var(--coral); }
-
-/* === USER BAR === */
-.user-bar {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  margin-bottom: 0.3rem;
-}
-
-.user-bar .user-name {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  font-size: 0.8rem;
-  color: var(--yolk-deep);
-}
-
-.user-bar .logout-btn {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  font-size: 0.7rem;
-  color: var(--text-light);
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-decoration: underline;
-  margin-left: 0.5rem;
-}
-.user-bar .logout-btn:hover { color: var(--coral); }
-
-/* === APP LOADING === */
-.app-content { display: none; }
-.app-content.loaded { display: block; }
-
-.loading-spinner {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1500;
-  background: var(--cream);
-}
-
-.loading-spinner .egg-spin {
-  font-size: 3rem;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
 </style>
 </head>
 <body>
 
-<!-- Login Modal -->
-<div class="login-overlay" id="loginOverlay" style="display:none">
-  <div class="login-card">
-    <div class="login-egg">🐣</div>
-    <h2 id="authTitle">Create your account</h2>
-    <p id="authSubtitle">Join the egg-cellent journey</p>
-    <div class="login-error" id="authError"></div>
-    <input type="text" class="login-input" id="nameInput" placeholder="Your name" maxlength="30" autocomplete="name" style="display:block">
-    <input type="email" class="login-input" id="emailInput" placeholder="Email" autocomplete="email">
-    <input type="password" class="login-input" id="passwordInput" placeholder="Password" autocomplete="current-password">
-    <button class="login-btn" id="authBtn" disabled onclick="handleAuth()">Create Account 🥚</button>
-    <div class="login-toggle">
-      <span id="toggleText">Already have an account?</span>
-      <button id="toggleBtn" onclick="toggleAuthMode()">Log in</button>
-    </div>
-  </div>
-</div>
-
-<!-- Loading Spinner -->
-<div class="loading-spinner" id="loadingSpinner" style="display:none">
-  <div class="egg-spin">🥚</div>
-</div>
-
 <!-- Floating background eggs -->
 <div class="floating-eggs" id="floatingEggs"></div>
-
-<div class="app-content" id="appContent">
 
 <!-- Header -->
 <header class="header">
@@ -986,14 +818,8 @@ body::before {
     <span style="animation-delay:0.3s">D</span><span style="animation-delay:0.35s">i</span><span style="animation-delay:0.4s">e</span><span style="animation-delay:0.45s">t</span>
     <span style="animation-delay:0.55s">T</span><span style="animation-delay:0.6s">r</span><span style="animation-delay:0.65s">a</span><span style="animation-delay:0.7s">c</span><span style="animation-delay:0.75s">k</span><span style="animation-delay:0.8s">e</span><span style="animation-delay:0.85s">r</span>
   </h1>
-  <p class="subtitle" id="subtitleText">15 days of egg-cellent progress 🐣</p>
+  <p class="subtitle">15 days of egg-cellent progress 🐣</p>
 </header>
-
-<!-- User Bar -->
-<div class="user-bar" id="userBar">
-  <span class="user-name" id="userDisplay"></span>
-  <button class="logout-btn" onclick="logout()">log out</button>
-</div>
 
 <!-- Start Date -->
 <div class="start-date-bar">
@@ -1055,17 +881,17 @@ body::before {
       <div class="rules-card egg-rules">
         <h3>🥚 Egg Fast Rules (Days 1-5 & 11-15)</h3>
         <ul class="rules-list">
-          <li>Eat 6–9 eggs per day</li>
+          <li>Eat 6-9 eggs per day</li>
           <li>15 g fat (butter/mayo) per egg</li>
           <li>Max 30 g cheese per egg (optional)</li>
-          <li>Eat every 3–4 hours</li>
+          <li>Eat every 3-4 hours</li>
           <li>Variations: deviled eggs, egg latte, baked eggs, omelet with cheese</li>
         </ul>
       </div>
       <div class="rules-card lchf-rules">
         <h3>🥩 Strict LCHF Rules (Days 6-10)</h3>
         <ul class="rules-list">
-          <li>Max 10–20 g carbs per day</li>
+          <li>Max 10-20 g carbs per day</li>
           <li>Eat when hungry</li>
           <li>Focus on fat + protein</li>
           <li>Avoid sugar, starch, and processed foods</li>
@@ -1075,8 +901,8 @@ body::before {
       <div class="rules-card hydration-rules">
         <h3>💧 Hydration & Drinks</h3>
         <ul class="rules-list">
-          <li>Water: 2–3 liters per day</li>
-          <li>Broth: 1–2 cups per day</li>
+          <li>Water: 2-3 liters per day</li>
+          <li>Broth: 1-2 cups per day</li>
           <li>Add salt to meals</li>
           <li>Coffee (black or with butter), tea</li>
           <li>Diet soda: max 1 per day</li>
@@ -1089,7 +915,7 @@ body::before {
           <li>Prioritize eggs + butter/mayo</li>
           <li>Limit cheese and dairy</li>
           <li>Avoid snacking unless needed</li>
-          <li>Expected: 5–7 kg loss in 15 days</li>
+          <li>Expected: 5-7 kg loss in 15 days</li>
         </ul>
       </div>
     </div>
@@ -1099,8 +925,6 @@ body::before {
     <button class="reset-btn" onclick="resetAll()">🔄 Reset All Progress</button>
   </div>
 </main>
-
-</div><!-- end app-content -->
 
 <script>
 // === DATA DEFINITIONS ===
@@ -1122,7 +946,7 @@ const lchfMeals = {
   ],
   8: [
     { id: 'lunch', name: 'Lunch', desc: 'Burger (no bun) + cheese', icon: '🍔' },
-    { id: 'dinner', name: 'Dinner', desc: 'Salmon + crème fraîche', icon: '🐟' },
+    { id: 'dinner', name: 'Dinner', desc: 'Salmon + creme fraiche', icon: '🐟' },
   ],
   9: [
     { id: 'lunch', name: 'Lunch', desc: 'Chicken + butter + zucchini', icon: '🍗' },
@@ -1134,11 +958,8 @@ const lchfMeals = {
   ],
 };
 
-// === STATE ===
-let state = null;
-let authToken = null;
-let currentUser = null;
-let saveTimeout = null;
+// === STATE (pure localStorage) ===
+let state = loadState();
 
 function defaultState() {
   const meals = {};
@@ -1146,41 +967,16 @@ function defaultState() {
   return { meals, weights: {}, startDate: null, celebrated: false };
 }
 
-function authHeaders() {
-  return {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + authToken,
-  };
-}
-
-async function loadStateFromServer() {
+function loadState() {
   try {
-    const res = await fetch('/api/state', { headers: authHeaders() });
-    if (res.status === 401) { logout(); return defaultState(); }
-    const data = await res.json();
-    if (data && data.meals) return data;
-  } catch(e) {
-    console.error('Failed to load from server:', e);
-  }
+    const s = JSON.parse(localStorage.getItem('eggDietTracker'));
+    if (s && s.meals) return s;
+  } catch(e) {}
   return defaultState();
 }
 
 function saveState() {
-  // Write-through to localStorage for instant reads
-  localStorage.setItem('eggDietState', JSON.stringify(state));
-  // Debounced save to server
-  clearTimeout(saveTimeout);
-  saveTimeout = setTimeout(async () => {
-    try {
-      await fetch('/api/state', {
-        method: 'PUT',
-        headers: authHeaders(),
-        body: JSON.stringify(state),
-      });
-    } catch(e) {
-      console.error('Failed to save to server:', e);
-    }
-  }, 500);
+  localStorage.setItem('eggDietTracker', JSON.stringify(state));
 }
 
 function getMealsForDay(day) {
@@ -1281,7 +1077,6 @@ function toggleMeal(day, mealId, el) {
     el.classList.add('not-completed');
   }
 
-  // Re-render the card to update completion count
   const card = el.closest('.day-card');
   const meals = getMealsForDay(day);
   const dayMeals = state.meals[day];
@@ -1523,7 +1318,7 @@ function initStartDate() {
 
 // === RESET ===
 function resetAll() {
-  if (confirm('Reset all your egg-cellent progress? This cannot be undone! 🥚')) {
+  if (confirm('Reset all your egg-cellent progress? This cannot be undone!')) {
     state = defaultState();
     saveState();
     renderAll();
@@ -1546,131 +1341,10 @@ function createFloatingEggs() {
   }
 }
 
-// === AUTH ===
-let isSignup = true;
-
-function showLogin() {
-  document.getElementById('loginOverlay').style.display = 'flex';
-  document.getElementById('appContent').classList.remove('loaded');
-  document.getElementById('emailInput').value = '';
-  document.getElementById('passwordInput').value = '';
-  document.getElementById('nameInput').value = '';
-  document.getElementById('authError').textContent = '';
-  document.getElementById('authBtn').disabled = true;
-  isSignup = true;
-  updateAuthUI();
-  setTimeout(() => document.getElementById('nameInput').focus(), 300);
-}
-
-function toggleAuthMode() {
-  isSignup = !isSignup;
-  updateAuthUI();
-  document.getElementById('authError').textContent = '';
-}
-
-function updateAuthUI() {
-  document.getElementById('authTitle').textContent = isSignup ? 'Create your account' : 'Welcome back!';
-  document.getElementById('authSubtitle').textContent = isSignup ? 'Join the egg-cellent journey' : 'Log in to continue your journey';
-  document.getElementById('authBtn').textContent = isSignup ? 'Create Account 🥚' : 'Log In 🍳';
-  document.getElementById('nameInput').style.display = isSignup ? 'block' : 'none';
-  document.getElementById('toggleText').textContent = isSignup ? 'Already have an account?' : "Don't have an account?";
-  document.getElementById('toggleBtn').textContent = isSignup ? 'Log in' : 'Sign up';
-  validateAuthForm();
-}
-
-function validateAuthForm() {
-  const email = document.getElementById('emailInput').value.trim();
-  const password = document.getElementById('passwordInput').value;
-  const name = document.getElementById('nameInput').value.trim();
-  const valid = email && password && (isSignup ? name : true);
-  document.getElementById('authBtn').disabled = !valid;
-}
-
-document.getElementById('emailInput').addEventListener('input', validateAuthForm);
-document.getElementById('passwordInput').addEventListener('input', validateAuthForm);
-document.getElementById('nameInput').addEventListener('input', validateAuthForm);
-
-document.querySelectorAll('#emailInput, #passwordInput, #nameInput').forEach(el => {
-  el.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !document.getElementById('authBtn').disabled) handleAuth();
-  });
-});
-
-async function handleAuth() {
-  const email = document.getElementById('emailInput').value.trim();
-  const password = document.getElementById('passwordInput').value;
-  const name = document.getElementById('nameInput').value.trim();
-  const errorEl = document.getElementById('authError');
-  const btn = document.getElementById('authBtn');
-
-  btn.disabled = true;
-  errorEl.textContent = '';
-
-  try {
-    const endpoint = isSignup ? '/api/signup' : '/api/login';
-    const body = isSignup ? { email, password, name } : { email, password };
-
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      errorEl.textContent = data.error || 'Something went wrong';
-      btn.disabled = false;
-      return;
-    }
-
-    authToken = data.token;
-    currentUser = data.user;
-    localStorage.setItem('eggDietToken', authToken);
-    localStorage.setItem('eggDietUser', JSON.stringify(currentUser));
-
-    document.getElementById('loginOverlay').style.display = 'none';
-    await loadApp();
-  } catch (e) {
-    errorEl.textContent = 'Connection error. Please try again.';
-    btn.disabled = false;
-  }
-}
-
-function logout() {
-  authToken = null;
-  currentUser = null;
-  state = null;
-  localStorage.removeItem('eggDietToken');
-  localStorage.removeItem('eggDietUser');
-  localStorage.removeItem('eggDietState');
-  showLogin();
-}
-
-async function loadApp() {
-  document.getElementById('loadingSpinner').style.display = 'flex';
-  state = await loadStateFromServer();
-  document.getElementById('loadingSpinner').style.display = 'none';
-  document.getElementById('appContent').classList.add('loaded');
-
-  document.getElementById('userDisplay').textContent = `${currentUser.name}'s egg journey`;
-
-  initStartDate();
-  renderAll();
-}
-
 // === INIT ===
 createFloatingEggs();
-
-const savedToken = localStorage.getItem('eggDietToken');
-const savedUser = localStorage.getItem('eggDietUser');
-if (savedToken && savedUser) {
-  authToken = savedToken;
-  currentUser = JSON.parse(savedUser);
-  loadApp();
-} else {
-  showLogin();
-}
+initStartDate();
+renderAll();
 </script>
 </body>
 </html>

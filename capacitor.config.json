@@ -1,0 +1,11 @@
+{
+  "appId": "com.eggdiet.tracker",
+  "appName": "Egg Diet Tracker",
+  "webDir": "dist",
+  "backgroundColor": "#FFFDF5",
+  "ios": {
+    "contentInset": "automatic",
+    "allowsLinkPreview": false,
+    "scrollEnabled": true
+  }
+}
