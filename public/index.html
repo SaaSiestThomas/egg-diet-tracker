@@ -2,12 +2,20 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Egg Diet Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Egg Diet Tracker - Track Your 15-Day Egg Diet Challenge</title>
+<meta name="description" content="Free egg diet tracker app for the popular 15-day egg diet plan. Track meals, monitor weight loss, and stay on top of your egg fast and LCHF phases.">
+<meta name="keywords" content="egg diet, egg fast, egg diet tracker, 15 day egg diet, keto egg fast, LCHF diet, weight loss tracker, egg diet plan, egg diet app">
+<meta name="author" content="Egg Diet Tracker">
+<link rel="canonical" href="https://eggdiettracker.com">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Egg Diet Tracker - 15-Day Egg Diet Challenge">
+<meta property="og:description" content="Free app to track your 15-day egg diet. Monitor meals, weight, and progress across all three phases.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://eggdiettracker.com">
+
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -18,20 +26,11 @@
   --eggshell: #FFF8E7;
   --eggshell-dark: #F5ECD7;
   --coral: #FF6B6B;
-  --coral-light: #FF8E8E;
   --sage: #7CB342;
-  --sage-light: #9CCC65;
   --brown: #8D6E4C;
-  --brown-light: #A0845C;
   --cream: #FFFDF5;
   --text: #4A3728;
   --text-light: #7A6555;
-  --shadow: rgba(139, 109, 75, 0.15);
-  --shadow-strong: rgba(139, 109, 75, 0.25);
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --safe-left: env(safe-area-inset-left, 0px);
-  --safe-right: env(safe-area-inset-right, 0px);
 }
 
 html { scroll-behavior: smooth; }
@@ -42,16 +41,9 @@ body {
   color: var(--text);
   min-height: 100vh;
   overflow-x: hidden;
-  padding-top: var(--safe-top);
-  padding-bottom: var(--safe-bottom);
-  padding-left: var(--safe-left);
-  padding-right: var(--safe-right);
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
 }
 
-/* === BACKGROUND PATTERN === */
+/* Background */
 body::before {
   content: '';
   position: fixed;
@@ -64,1287 +56,489 @@ body::before {
   z-index: 0;
 }
 
-/* === FLOATING EGGS BACKGROUND === */
-.floating-eggs {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
+/* Navigation */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 253, 245, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid var(--eggshell-dark);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.floating-egg {
-  position: absolute;
-  font-size: 2rem;
-  opacity: 0.08;
-  animation: floatEgg linear infinite;
-}
-
-@keyframes floatEgg {
-  0% { transform: translateY(110vh) rotate(0deg); }
-  100% { transform: translateY(-10vh) rotate(360deg); }
-}
-
-/* === HEADER === */
-.header {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  padding: 2.5rem 1rem 1.5rem;
-  background: linear-gradient(180deg, rgba(255,217,61,0.15) 0%, transparent 100%);
-}
-
-.header-egg-row {
-  font-size: 2.2rem;
-  letter-spacing: 0.3rem;
-  margin-bottom: 0.5rem;
-  animation: wiggleRow 3s ease-in-out infinite;
-}
-
-@keyframes wiggleRow {
-  0%, 100% { transform: rotate(-1deg); }
-  50% { transform: rotate(1deg); }
-}
-
-.header h1 {
+.nav-logo {
   font-family: 'Fredoka', sans-serif;
   font-weight: 700;
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-size: 1.4rem;
   color: var(--yolk-deep);
-  text-shadow: 2px 2px 0 rgba(245,166,35,0.2);
-  line-height: 1.1;
+  text-decoration: none;
 }
 
-.header h1 span {
-  display: inline-block;
-  animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
-}
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
 
-.header .subtitle {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 400;
+.nav-links a {
+  font-weight: 600;
   color: var(--text-light);
-  font-size: 1.05rem;
-  margin-top: 0.4rem;
+  text-decoration: none;
+  transition: color 0.2s;
 }
 
-@keyframes bounceIn {
-  0% { transform: scale(0) rotate(-10deg); opacity: 0; }
-  100% { transform: scale(1) rotate(0deg); opacity: 1; }
-}
+.nav-links a:hover { color: var(--yolk-deep); }
 
-/* === PROGRESS BAR === */
-.progress-section {
-  position: relative;
-  z-index: 1;
-  max-width: 600px;
-  margin: 0 auto 1.5rem;
-  padding: 0 1.5rem;
-}
-
-.progress-bar-outer {
-  background: var(--eggshell-dark);
-  border-radius: 50px;
-  height: 28px;
-  overflow: hidden;
-  position: relative;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
-}
-
-.progress-bar-inner {
-  height: 100%;
-  border-radius: 50px;
-  background: linear-gradient(90deg, var(--yolk) 0%, var(--yolk-glow) 50%, var(--coral-light) 100%);
-  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-  min-width: 28px;
-}
-
-.progress-bar-inner::after {
-  content: '';
-  position: absolute;
-  top: 4px; left: 8px; right: 8px;
-  height: 8px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 100%);
-  border-radius: 50px;
-}
-
-.progress-text {
-  text-align: center;
-  margin-top: 0.5rem;
+.cta-button {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--yolk) 0%, var(--yolk-deep) 100%);
+  color: white;
   font-family: 'Fredoka', sans-serif;
   font-weight: 600;
+  font-size: 1rem;
+  padding: 0.7rem 1.8rem;
+  border-radius: 50px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(245, 166, 35, 0.3);
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 166, 35, 0.4);
+}
+
+.cta-button.large {
+  font-size: 1.2rem;
+  padding: 1rem 2.5rem;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 5rem 2rem 4rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-eggs {
+  font-size: 3rem;
+  letter-spacing: 0.5rem;
+  margin-bottom: 1.5rem;
+  animation: wiggle 3s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+.hero h1 {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  color: var(--yolk-deep);
+  text-shadow: 2px 2px 0 rgba(245,166,35,0.15);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.hero .subtitle {
+  font-size: 1.25rem;
+  color: var(--text-light);
+  max-width: 550px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.secondary-button {
+  display: inline-block;
+  background: white;
+  color: var(--yolk-deep);
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  border: 2px solid var(--yolk);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.secondary-button:hover {
+  transform: translateY(-2px);
+  background: var(--eggshell);
+}
+
+/* Sections */
+.section {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.section-title {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--yolk-deep);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--text-light);
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Feature Cards */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.feature-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(139, 109, 75, 0.1);
+  border: 2px solid var(--eggshell-dark);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(139, 109, 75, 0.15);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.feature-card p {
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* How It Works */
+.phases {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.phase-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(139, 109, 75, 0.1);
+  border: 2px solid var(--eggshell-dark);
+}
+
+.phase-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--yolk) 0%, var(--yolk-deep) 100%);
+  color: white;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.phase-card h3 {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.phase-card .days {
+  font-weight: 700;
+  color: var(--yolk-deep);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.phase-card p {
+  color: var(--text-light);
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+/* FAQ */
+.faq-list {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faq-item {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 2px 12px rgba(139, 109, 75, 0.08);
+  border: 2px solid var(--eggshell-dark);
+}
+
+.faq-item h3 {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.faq-item p {
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* CTA Section */
+.cta-section {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(180deg, transparent 0%, rgba(255,217,61,0.1) 100%);
+}
+
+.cta-section h2 {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--yolk-deep);
+  margin-bottom: 1rem;
+}
+
+.cta-section p {
+  color: var(--text-light);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+/* Footer */
+.footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 2rem;
+  border-top: 2px solid var(--eggshell-dark);
   color: var(--text-light);
   font-size: 0.9rem;
 }
 
-.progress-text .egg-count {
-  color: var(--yolk-deep);
-  font-size: 1.1rem;
-}
-
-/* === NAV TABS === */
-.nav-tabs {
-  position: relative;
-  z-index: 1;
+.footer-links {
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0 1rem;
-  margin-bottom: 1.5rem;
+  gap: 2rem;
+  margin-bottom: 1rem;
   flex-wrap: wrap;
 }
 
-.nav-tab {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  font-size: 0.85rem;
-  padding: 0.5rem 1.2rem;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.nav-tab::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50px;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.nav-tab:hover { transform: translateY(-2px) scale(1.05); }
-.nav-tab:active { transform: translateY(0) scale(0.98); }
-
-.nav-tab[data-phase="1"], .nav-tab[data-phase="3"] {
-  background: var(--eggshell-dark);
-  color: var(--yolk-deep);
-}
-.nav-tab[data-phase="1"].active, .nav-tab[data-phase="3"].active {
-  background: var(--yolk);
-  color: white;
-  box-shadow: 0 4px 15px rgba(245,166,35,0.4);
-}
-
-.nav-tab[data-phase="2"] {
-  background: var(--eggshell-dark);
-  color: var(--sage);
-}
-.nav-tab[data-phase="2"].active {
-  background: var(--sage);
-  color: white;
-  box-shadow: 0 4px 15px rgba(124,179,66,0.4);
-}
-
-.nav-tab[data-phase="weight"] {
-  background: var(--eggshell-dark);
-  color: var(--coral);
-}
-.nav-tab[data-phase="weight"].active {
-  background: var(--coral);
-  color: white;
-  box-shadow: 0 4px 15px rgba(255,107,107,0.4);
-}
-
-.nav-tab[data-phase="rules"] {
-  background: var(--eggshell-dark);
-  color: var(--brown);
-}
-.nav-tab[data-phase="rules"].active {
-  background: var(--brown);
-  color: white;
-  box-shadow: 0 4px 15px rgba(141,110,76,0.4);
-}
-
-/* === MAIN CONTENT === */
-.main-content {
-  position: relative;
-  z-index: 1;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 1rem 3rem;
-}
-
-.phase-section { display: none; }
-.phase-section.active { display: block; }
-
-/* === DAY CARDS === */
-.days-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.2rem;
-}
-
-.day-card {
-  background: white;
-  border-radius: 24px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 20px var(--shadow);
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
-  animation: cardAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-.day-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px var(--shadow-strong);
-}
-
-@keyframes cardAppear {
-  0% { transform: scale(0.8) translateY(20px); opacity: 0; }
-  100% { transform: scale(1) translateY(0); opacity: 1; }
-}
-
-.day-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 4px;
-}
-
-.day-card[data-phase="egg"]::before {
-  background: linear-gradient(90deg, var(--yolk), var(--yolk-glow));
-}
-
-.day-card[data-phase="lchf"]::before {
-  background: linear-gradient(90deg, var(--sage), var(--sage-light));
-}
-
-.day-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-
-.day-number {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 700;
-  font-size: 1.3rem;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.day-card[data-phase="egg"] .day-number { color: var(--yolk-deep); }
-.day-card[data-phase="lchf"] .day-number { color: var(--sage); }
-
-.day-badge {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  font-size: 0.65rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 50px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.day-card[data-phase="egg"] .day-badge {
-  background: rgba(245,166,35,0.12);
-  color: var(--yolk-deep);
-}
-
-.day-card[data-phase="lchf"] .day-badge {
-  background: rgba(124,179,66,0.12);
-  color: var(--sage);
-}
-
-.day-completion {
-  font-family: 'Fredoka', sans-serif;
-  font-size: 0.8rem;
+.footer-links a {
   color: var(--text-light);
+  text-decoration: none;
+  transition: color 0.2s;
 }
 
-/* === MEAL ITEMS === */
-.meals-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
+.footer-links a:hover { color: var(--yolk-deep); }
 
-.meal-item {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  padding: 0.6rem 0.8rem;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  background: var(--eggshell);
-  border: 2px solid transparent;
-}
-
-.meal-item:hover {
-  transform: scale(1.02);
-  border-color: rgba(245,166,35,0.2);
-}
-
-.meal-item:active {
-  transform: scale(0.97);
-}
-
-.meal-item.completed {
-  background: linear-gradient(135deg, rgba(245,166,35,0.1), rgba(255,217,61,0.15));
-  border-color: var(--yolk);
-}
-
-.meal-item.completed .meal-icon {
-  transform: scale(1.15);
-}
-
-.meal-icon {
-  font-size: 1.8rem;
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-  flex-shrink: 0;
-  width: 2.5rem;
-  text-align: center;
-}
-
-.meal-item.completed .meal-icon::after {
-  content: '\2713';
-  position: absolute;
-  bottom: -4px;
-  right: -6px;
-  font-size: 0.75rem;
-  background: var(--sage);
-  color: white;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-  animation: checkPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-@keyframes checkPop {
-  0% { transform: scale(0) rotate(-180deg); }
-  100% { transform: scale(1) rotate(0deg); }
-}
-
-.meal-info { flex: 1; }
-
-.meal-name {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  font-size: 0.85rem;
-  color: var(--text);
-}
-
-.meal-desc {
-  font-size: 0.72rem;
-  color: var(--text-light);
-  margin-top: 0.1rem;
-}
-
-.meal-item.completed .meal-name { color: var(--sage); }
-
-.meal-item.not-completed .meal-icon {
-  filter: grayscale(0.3) opacity(0.7);
-}
-
-/* === WIGGLE ANIMATION === */
-@keyframes wiggle {
-  0%, 100% { transform: rotate(0deg) scale(1.15); }
-  20% { transform: rotate(-12deg) scale(1.2); }
-  40% { transform: rotate(10deg) scale(1.25); }
-  60% { transform: rotate(-8deg) scale(1.2); }
-  80% { transform: rotate(5deg) scale(1.15); }
-}
-
-.meal-item.just-clicked .meal-icon {
-  animation: wiggle 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* === SPARKLE BURST === */
-.sparkle-container {
-  position: absolute;
-  pointer-events: none;
-  z-index: 10;
-}
-
-.sparkle {
-  position: absolute;
-  font-size: 1rem;
-  animation: sparkleBurst 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-@keyframes sparkleBurst {
-  0% { transform: translate(0,0) scale(0); opacity: 1; }
-  100% { transform: translate(var(--tx), var(--ty)) scale(1); opacity: 0; }
-}
-
-/* === WEIGHT SECTION === */
-.weight-section {
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.chart-container {
-  background: white;
-  border-radius: 24px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 20px var(--shadow);
-  margin-bottom: 1.5rem;
-}
-
-.chart-container h3 {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  color: var(--coral);
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-}
-
-.chart-container canvas {
-  max-height: 300px;
-}
-
-.weight-inputs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 0.8rem;
-}
-
-.weight-input-card {
-  background: white;
-  border-radius: 16px;
-  padding: 1rem;
-  box-shadow: 0 2px 12px var(--shadow);
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.weight-input-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px var(--shadow-strong);
-}
-
-.weight-day-label {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  font-size: 0.8rem;
-  white-space: nowrap;
-}
-
-.weight-input-card[data-phase="egg"] .weight-day-label { color: var(--yolk-deep); }
-.weight-input-card[data-phase="lchf"] .weight-day-label { color: var(--sage); }
-
-.weight-input {
-  width: 100%;
-  border: 2px solid var(--eggshell-dark);
-  border-radius: 12px;
-  padding: 0.5rem 0.7rem;
-  font-family: 'Fredoka', sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text);
-  background: var(--eggshell);
-  transition: border-color 0.2s, box-shadow 0.2s;
-  outline: none;
-  text-align: center;
-  -webkit-user-select: text;
-  user-select: text;
-}
-
-.weight-input:focus {
-  border-color: var(--coral);
-  box-shadow: 0 0 0 3px rgba(255,107,107,0.15);
-}
-
-.weight-input::placeholder {
-  color: var(--text-light);
-  opacity: 0.5;
-}
-
-.weight-diff {
-  font-family: 'Fredoka', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.weight-diff.loss { color: var(--sage); }
-.weight-diff.gain { color: var(--coral); }
-
-/* === RULES SECTION === */
-.rules-section {
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.rules-card {
-  background: white;
-  border-radius: 24px;
-  padding: 1.5rem 2rem;
-  box-shadow: 0 4px 20px var(--shadow);
-  margin-bottom: 1rem;
-}
-
-.rules-card h3 {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 700;
-  margin-bottom: 0.8rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.1rem;
-}
-
-.rules-card.egg-rules h3 { color: var(--yolk-deep); }
-.rules-card.lchf-rules h3 { color: var(--sage); }
-.rules-card.hydration-rules h3 { color: #4FC3F7; }
-.rules-card.tips-rules h3 { color: var(--coral); }
-
-.rules-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.rules-list li {
-  padding: 0.5rem 0.8rem;
-  background: var(--eggshell);
-  border-radius: 12px;
-  font-size: 0.85rem;
-  line-height: 1.4;
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
-
-.rules-list li::before {
-  content: '\2022';
-  font-weight: 800;
-  flex-shrink: 0;
-}
-
-.rules-card.egg-rules .rules-list li::before { color: var(--yolk); }
-.rules-card.lchf-rules .rules-list li::before { color: var(--sage); }
-.rules-card.hydration-rules .rules-list li::before { color: #4FC3F7; }
-.rules-card.tips-rules .rules-list li::before { color: var(--coral); }
-
-/* === DAY COMPLETE CELEBRATION === */
-.day-card.all-done {
-  background: linear-gradient(135deg, #FFFDE7 0%, #FFF8E1 100%);
-}
-
-.day-card.all-done::after {
-  content: '\1F389';
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-size: 1.3rem;
-  animation: bounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* === RESET BUTTON === */
-.reset-container {
-  text-align: center;
-  margin-top: 2rem;
-  padding-bottom: 2rem;
-}
-
-.reset-btn {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  font-size: 0.8rem;
-  padding: 0.5rem 1.5rem;
-  border: 2px solid var(--eggshell-dark);
-  border-radius: 50px;
-  background: transparent;
-  color: var(--text-light);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.reset-btn:hover {
-  border-color: var(--coral);
-  color: var(--coral);
-  background: rgba(255,107,107,0.05);
-}
-
-/* === RESPONSIVE === */
 @media (max-width: 600px) {
-  .days-grid {
-    grid-template-columns: 1fr;
-  }
-  .header { padding: 1.5rem 1rem 1rem; }
-  .header h1 { font-size: 2rem; }
-  .nav-tabs { gap: 0.3rem; }
-  .nav-tab { font-size: 0.75rem; padding: 0.4rem 0.8rem; }
-  .day-card { padding: 1.2rem; }
-  .weight-inputs-grid { grid-template-columns: 1fr 1fr; }
-  .rules-card { padding: 1.2rem 1.2rem; }
-}
-
-/* === YOLK SPLAT ANIMATION === */
-@keyframes yolkSplat {
-  0% { transform: scale(0); opacity: 1; }
-  50% { transform: scale(1.5); opacity: 0.8; }
-  100% { transform: scale(2); opacity: 0; }
-}
-
-.yolk-splat {
-  position: fixed;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--yolk-glow) 0%, var(--yolk) 40%, transparent 70%);
-  pointer-events: none;
-  z-index: 100;
-  animation: yolkSplat 0.6s ease-out forwards;
-}
-
-/* === FULL COMPLETION === */
-.full-completion-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: fadeIn 0.3s;
-  backdrop-filter: blur(4px);
-}
-
-@keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
-
-.full-completion-card {
-  background: white;
-  border-radius: 32px;
-  padding: 3rem;
-  text-align: center;
-  max-width: 400px;
-  margin: 1rem;
-  animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-}
-
-.full-completion-card .big-egg { font-size: 4rem; margin-bottom: 1rem; }
-.full-completion-card h2 {
-  font-family: 'Fredoka', sans-serif;
-  color: var(--yolk-deep);
-  font-size: 1.8rem;
-  margin-bottom: 0.5rem;
-}
-.full-completion-card p {
-  color: var(--text-light);
-  margin-bottom: 1.5rem;
-}
-
-.close-celebration {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  padding: 0.7rem 2rem;
-  border: none;
-  border-radius: 50px;
-  background: var(--yolk);
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.close-celebration:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 15px rgba(245,166,35,0.4);
-}
-
-/* Start date bar */
-.start-date-bar {
-  position: relative;
-  z-index: 1;
-  max-width: 400px;
-  margin: 0 auto 1rem;
-  padding: 0 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-}
-
-.start-date-bar label {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  font-size: 0.8rem;
-  color: var(--text-light);
-  white-space: nowrap;
-}
-
-.start-date-input {
-  border: 2px solid var(--eggshell-dark);
-  border-radius: 12px;
-  padding: 0.35rem 0.7rem;
-  font-family: 'Fredoka', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text);
-  background: white;
-  outline: none;
-  transition: border-color 0.2s;
-  -webkit-user-select: text;
-  user-select: text;
-}
-
-.start-date-input:focus {
-  border-color: var(--yolk);
+  .nav { padding: 0.8rem 1rem; }
+  .nav-links a:not(.cta-button) { display: none; }
+  .hero { padding: 3rem 1.5rem 2.5rem; }
+  .section { padding: 3rem 1.5rem; }
 }
 </style>
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Egg Diet Tracker",
+  "url": "https://eggdiettracker.com",
+  "description": "Free tracker app for the 15-day egg diet plan. Track meals, weight, and progress across egg fast and LCHF phases.",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "iOS, Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
 </head>
 <body>
 
-<!-- Floating background eggs -->
-<div class="floating-eggs" id="floatingEggs"></div>
-
-<!-- Header -->
-<header class="header">
-  <div class="header-egg-row">🥚🍳🥚🍳🥚</div>
-  <h1>
-    <span style="animation-delay:0.1s">E</span><span style="animation-delay:0.15s">g</span><span style="animation-delay:0.2s">g</span>
-    <span style="animation-delay:0.3s">D</span><span style="animation-delay:0.35s">i</span><span style="animation-delay:0.4s">e</span><span style="animation-delay:0.45s">t</span>
-    <span style="animation-delay:0.55s">T</span><span style="animation-delay:0.6s">r</span><span style="animation-delay:0.65s">a</span><span style="animation-delay:0.7s">c</span><span style="animation-delay:0.75s">k</span><span style="animation-delay:0.8s">e</span><span style="animation-delay:0.85s">r</span>
-  </h1>
-  <p class="subtitle">15 days of egg-cellent progress 🐣</p>
-</header>
-
-<!-- Start Date -->
-<div class="start-date-bar">
-  <label for="startDate">📅 Start Date:</label>
-  <input type="date" id="startDate" class="start-date-input">
-</div>
-
-<!-- Progress -->
-<div class="progress-section">
-  <div class="progress-bar-outer">
-    <div class="progress-bar-inner" id="progressBar" style="width: 0%"></div>
-  </div>
-  <div class="progress-text">
-    <span class="egg-count" id="progressCount">0</span> / <span id="progressTotal">0</span> meals tracked
-  </div>
-</div>
-
 <!-- Navigation -->
-<nav class="nav-tabs">
-  <button class="nav-tab active" data-phase="1" onclick="showPhase('phase1')">🥚 Phase 1</button>
-  <button class="nav-tab" data-phase="2" onclick="showPhase('phase2')">🥩 Phase 2</button>
-  <button class="nav-tab" data-phase="3" onclick="showPhase('phase3')">🥚 Phase 3</button>
-  <button class="nav-tab" data-phase="weight" onclick="showPhase('weight')">⚖️ Weight</button>
-  <button class="nav-tab" data-phase="rules" onclick="showPhase('rules')">📋 Rules</button>
+<nav class="nav">
+  <a href="/" class="nav-logo">Egg Diet Tracker</a>
+  <div class="nav-links">
+    <a href="#how-it-works">How It Works</a>
+    <a href="#features">Features</a>
+    <a href="#faq">FAQ</a>
+    <a href="/app" class="cta-button">Start Tracking</a>
+  </div>
 </nav>
 
-<!-- Main Content -->
-<main class="main-content">
-
-  <!-- Phase 1: Days 1-5 Egg Fast -->
-  <section class="phase-section active" id="phase1">
-    <div class="days-grid" id="phase1Grid"></div>
-  </section>
-
-  <!-- Phase 2: Days 6-10 LCHF -->
-  <section class="phase-section" id="phase2">
-    <div class="days-grid" id="phase2Grid"></div>
-  </section>
-
-  <!-- Phase 3: Days 11-15 Egg Fast -->
-  <section class="phase-section" id="phase3">
-    <div class="days-grid" id="phase3Grid"></div>
-  </section>
-
-  <!-- Weight Tracking -->
-  <section class="phase-section" id="weight">
-    <div class="weight-section">
-      <div class="chart-container">
-        <h3>📉 Weight Journey</h3>
-        <canvas id="weightChart"></canvas>
-      </div>
-      <div class="weight-inputs-grid" id="weightInputs"></div>
-    </div>
-  </section>
-
-  <!-- Rules -->
-  <section class="phase-section" id="rules">
-    <div class="rules-section">
-      <div class="rules-card egg-rules">
-        <h3>🥚 Egg Fast Rules (Days 1-5 & 11-15)</h3>
-        <ul class="rules-list">
-          <li>Eat 6-9 eggs per day</li>
-          <li>15 g fat (butter/mayo) per egg</li>
-          <li>Max 30 g cheese per egg (optional)</li>
-          <li>Eat every 3-4 hours</li>
-          <li>Variations: deviled eggs, egg latte, baked eggs, omelet with cheese</li>
-        </ul>
-      </div>
-      <div class="rules-card lchf-rules">
-        <h3>🥩 Strict LCHF Rules (Days 6-10)</h3>
-        <ul class="rules-list">
-          <li>Max 10-20 g carbs per day</li>
-          <li>Eat when hungry</li>
-          <li>Focus on fat + protein</li>
-          <li>Avoid sugar, starch, and processed foods</li>
-          <li>Snacks: eggs, cheese (avoid nuts for max fat loss)</li>
-        </ul>
-      </div>
-      <div class="rules-card hydration-rules">
-        <h3>💧 Hydration & Drinks</h3>
-        <ul class="rules-list">
-          <li>Water: 2-3 liters per day</li>
-          <li>Broth: 1-2 cups per day</li>
-          <li>Add salt to meals</li>
-          <li>Coffee (black or with butter), tea</li>
-          <li>Diet soda: max 1 per day</li>
-        </ul>
-      </div>
-      <div class="rules-card tips-rules">
-        <h3>⚡ Key Strategy</h3>
-        <ul class="rules-list">
-          <li>Keep meals simple and repetitive</li>
-          <li>Prioritize eggs + butter/mayo</li>
-          <li>Limit cheese and dairy</li>
-          <li>Avoid snacking unless needed</li>
-          <li>Expected: 5-7 kg loss in 15 days</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <div class="reset-container">
-    <button class="reset-btn" onclick="resetAll()">🔄 Reset All Progress</button>
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-eggs">🥚🍳🥚🍳🥚</div>
+  <h1>Track Your 15-Day Egg Diet Challenge</h1>
+  <p class="subtitle">The easiest way to stay on track with your egg fast diet. Track meals, monitor your weight, and crush all three phases.</p>
+  <div class="hero-buttons">
+    <a href="/app" class="cta-button large">Start Tracking Free</a>
+    <a href="#how-it-works" class="secondary-button">Learn More</a>
   </div>
-</main>
+</section>
 
-<script>
-// === DATA DEFINITIONS ===
-const eggFastMeals = [
-  { id: 'breakfast', name: 'Breakfast', desc: '2 boiled eggs + mayo', icon: '🥚' },
-  { id: 'lunch', name: 'Lunch', desc: '3 scrambled eggs + butter + cheese', icon: '🍳' },
-  { id: 'snack', name: 'Snack', desc: '1-2 eggs + mayo', icon: '🥚' },
-  { id: 'dinner', name: 'Dinner', desc: '2-3 egg omelet + butter', icon: '🧈' },
-];
-
-const lchfMeals = {
-  6: [
-    { id: 'lunch', name: 'Lunch', desc: 'Ground beef + butter + salad', icon: '🥩' },
-    { id: 'dinner', name: 'Dinner', desc: 'Salmon + butter + asparagus', icon: '🐟' },
-  ],
-  7: [
-    { id: 'lunch', name: 'Lunch', desc: 'Chicken + aioli', icon: '🍗' },
-    { id: 'dinner', name: 'Dinner', desc: 'Bacon + eggs', icon: '🥓' },
-  ],
-  8: [
-    { id: 'lunch', name: 'Lunch', desc: 'Burger (no bun) + cheese', icon: '🍔' },
-    { id: 'dinner', name: 'Dinner', desc: 'Salmon + creme fraiche', icon: '🐟' },
-  ],
-  9: [
-    { id: 'lunch', name: 'Lunch', desc: 'Chicken + butter + zucchini', icon: '🍗' },
-    { id: 'dinner', name: 'Dinner', desc: 'Ground beef + eggs', icon: '🥩' },
-  ],
-  10: [
-    { id: 'lunch', name: 'Lunch', desc: 'Eggs + bacon', icon: '🥓' },
-    { id: 'dinner', name: 'Dinner', desc: 'Meat or fish + butter', icon: '🥩' },
-  ],
-};
-
-// === STATE (pure localStorage) ===
-let state = loadState();
-
-function defaultState() {
-  const meals = {};
-  for (let d = 1; d <= 15; d++) meals[d] = {};
-  return { meals, weights: {}, startDate: null, celebrated: false };
-}
-
-function loadState() {
-  try {
-    const s = JSON.parse(localStorage.getItem('eggDietTracker'));
-    if (s && s.meals) return s;
-  } catch(e) {}
-  return defaultState();
-}
-
-function saveState() {
-  localStorage.setItem('eggDietTracker', JSON.stringify(state));
-}
-
-function getMealsForDay(day) {
-  if (day <= 5 || day >= 11) return eggFastMeals;
-  return lchfMeals[day] || [];
-}
-
-function getPhaseForDay(day) {
-  return (day <= 5 || day >= 11) ? 'egg' : 'lchf';
-}
-
-// === RENDERING ===
-function createDayCard(day) {
-  const phase = getPhaseForDay(day);
-  const meals = getMealsForDay(day);
-  const dayMeals = state.meals[day] || {};
-  const completedCount = meals.filter(m => dayMeals[m.id]).length;
-  const allDone = completedCount === meals.length;
-
-  const card = document.createElement('div');
-  card.className = `day-card${allDone ? ' all-done' : ''}`;
-  card.dataset.phase = phase;
-  card.style.animationDelay = `${(day % 5) * 0.08}s`;
-
-  const phaseLabel = phase === 'egg' ? 'Egg Fast' : 'LCHF';
-  const dateStr = state.startDate ? formatDate(day) : '';
-
-  card.innerHTML = `
-    <div class="day-header">
-      <div class="day-number">🗓 Day ${day}</div>
-      <span class="day-badge">${phaseLabel}</span>
+<!-- Features -->
+<section class="section" id="features">
+  <h2 class="section-title">Everything You Need</h2>
+  <p class="section-subtitle">A simple, fun tracker built specifically for the 15-day egg diet plan.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🍳</div>
+      <h3>Meal Tracking</h3>
+      <p>Check off each meal as you go. Track eggs eaten, butter, cheese, and stay within the rules for each phase.</p>
     </div>
-    ${dateStr ? `<div style="font-size:0.7rem;color:var(--text-light);margin-top:-0.6rem;margin-bottom:0.6rem;">${dateStr}</div>` : ''}
-    <div class="meals-list">
-      ${meals.map(meal => {
-        const done = !!dayMeals[meal.id];
-        return `
-          <div class="meal-item ${done ? 'completed' : 'not-completed'}"
-               data-day="${day}" data-meal="${meal.id}"
-               onclick="toggleMeal(${day}, '${meal.id}', this)">
-            <div class="meal-icon">${meal.icon}</div>
-            <div class="meal-info">
-              <div class="meal-name">${meal.name}</div>
-              <div class="meal-desc">${meal.desc}</div>
-            </div>
-          </div>
-        `;
-      }).join('')}
+    <div class="feature-card">
+      <div class="feature-icon">📉</div>
+      <h3>Weight Chart</h3>
+      <p>Log your daily weight and watch your progress on a visual chart. See exactly how much you've lost over the 15 days.</p>
     </div>
-    <div class="day-completion" style="margin-top:0.6rem;text-align:right;">
-      ${completedCount}/${meals.length} ${allDone ? '⭐' : ''}
+    <div class="feature-card">
+      <div class="feature-icon">📅</div>
+      <h3>Phase Management</h3>
+      <p>Clearly organized into three phases: Egg Fast (days 1-5), Strict LCHF (days 6-10), and Egg Fast again (days 11-15).</p>
     </div>
-  `;
-
-  return card;
-}
-
-function formatDate(day) {
-  if (!state.startDate) return '';
-  const d = new Date(state.startDate);
-  d.setDate(d.getDate() + day - 1);
-  return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-}
-
-function renderPhase(gridId, startDay, endDay) {
-  const grid = document.getElementById(gridId);
-  grid.innerHTML = '';
-  for (let d = startDay; d <= endDay; d++) {
-    grid.appendChild(createDayCard(d));
-  }
-}
-
-function renderAll() {
-  renderPhase('phase1Grid', 1, 5);
-  renderPhase('phase2Grid', 6, 10);
-  renderPhase('phase3Grid', 11, 15);
-  renderWeightInputs();
-  updateProgress();
-  updateChart();
-}
-
-// === MEAL TOGGLE ===
-function toggleMeal(day, mealId, el) {
-  if (!state.meals[day]) state.meals[day] = {};
-  const wasCompleted = !!state.meals[day][mealId];
-  state.meals[day][mealId] = !wasCompleted;
-  saveState();
-
-  if (!wasCompleted) {
-    el.classList.add('just-clicked');
-    el.classList.remove('not-completed');
-    el.classList.add('completed');
-    spawnSparkles(el);
-    spawnYolkSplat(el);
-    setTimeout(() => el.classList.remove('just-clicked'), 600);
-  } else {
-    el.classList.remove('completed');
-    el.classList.add('not-completed');
-  }
-
-  const card = el.closest('.day-card');
-  const meals = getMealsForDay(day);
-  const dayMeals = state.meals[day];
-  const completedCount = meals.filter(m => dayMeals[m.id]).length;
-  const allDone = completedCount === meals.length;
-
-  card.classList.toggle('all-done', allDone);
-  const compEl = card.querySelector('.day-completion');
-  compEl.innerHTML = `${completedCount}/${meals.length} ${allDone ? '⭐' : ''}`;
-
-  updateProgress();
-  checkFullCompletion();
-}
-
-function spawnSparkles(el) {
-  const rect = el.getBoundingClientRect();
-  const sparkles = ['✨', '⭐', '🌟', '💛', '🥚'];
-  for (let i = 0; i < 5; i++) {
-    const sp = document.createElement('div');
-    sp.className = 'sparkle';
-    sp.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
-    const angle = (Math.PI * 2 * i) / 5 + (Math.random() - 0.5);
-    const dist = 40 + Math.random() * 30;
-    sp.style.setProperty('--tx', `${Math.cos(angle) * dist}px`);
-    sp.style.setProperty('--ty', `${Math.sin(angle) * dist}px`);
-    sp.style.left = `${rect.width / 2}px`;
-    sp.style.top = `${rect.height / 2}px`;
-
-    const container = document.createElement('div');
-    container.className = 'sparkle-container';
-    container.style.left = `${rect.left}px`;
-    container.style.top = `${rect.top}px`;
-    container.appendChild(sp);
-    document.body.appendChild(container);
-    setTimeout(() => container.remove(), 700);
-  }
-}
-
-function spawnYolkSplat(el) {
-  const rect = el.getBoundingClientRect();
-  const splat = document.createElement('div');
-  splat.className = 'yolk-splat';
-  splat.style.left = `${rect.left + rect.width / 2 - 30}px`;
-  splat.style.top = `${rect.top + rect.height / 2 - 30}px`;
-  document.body.appendChild(splat);
-  setTimeout(() => splat.remove(), 600);
-}
-
-// === PROGRESS ===
-function updateProgress() {
-  let total = 0, completed = 0;
-  for (let d = 1; d <= 15; d++) {
-    const meals = getMealsForDay(d);
-    total += meals.length;
-    const dayMeals = state.meals[d] || {};
-    completed += meals.filter(m => dayMeals[m.id]).length;
-  }
-  const pct = total ? (completed / total * 100) : 0;
-  document.getElementById('progressBar').style.width = `${pct}%`;
-  document.getElementById('progressCount').textContent = completed;
-  document.getElementById('progressTotal').textContent = total;
-}
-
-function checkFullCompletion() {
-  if (state.celebrated) return;
-  let total = 0, completed = 0;
-  for (let d = 1; d <= 15; d++) {
-    const meals = getMealsForDay(d);
-    total += meals.length;
-    const dayMeals = state.meals[d] || {};
-    completed += meals.filter(m => dayMeals[m.id]).length;
-  }
-  if (completed === total) {
-    state.celebrated = true;
-    saveState();
-    showCelebration();
-  }
-}
-
-function showCelebration() {
-  const overlay = document.createElement('div');
-  overlay.className = 'full-completion-overlay';
-  overlay.innerHTML = `
-    <div class="full-completion-card">
-      <div class="big-egg">🏆</div>
-      <h2>Egg-straordinary!</h2>
-      <p>You completed all 15 days! You are an absolute egg legend. 🥚👑</p>
-      <button class="close-celebration" onclick="this.closest('.full-completion-overlay').remove()">
-        Cluck Yeah! 🐔
-      </button>
+    <div class="feature-card">
+      <div class="feature-icon">📋</div>
+      <h3>Built-in Rules</h3>
+      <p>Never forget what you can eat. The rules for each phase are always just a tap away, right inside the app.</p>
     </div>
-  `;
-  document.body.appendChild(overlay);
-}
+    <div class="feature-card">
+      <div class="feature-icon">📱</div>
+      <h3>Works Everywhere</h3>
+      <p>Available as an iOS app and on the web. Your data stays on your device, no account required.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎉</div>
+      <h3>Fun &amp; Motivating</h3>
+      <p>Playful egg-themed design with progress tracking that keeps you motivated through all 15 days.</p>
+    </div>
+  </div>
+</section>
 
-// === WEIGHT ===
-function renderWeightInputs() {
-  const grid = document.getElementById('weightInputs');
-  grid.innerHTML = '';
-  for (let d = 1; d <= 15; d++) {
-    const phase = getPhaseForDay(d);
-    const w = state.weights[d];
-    const firstWeight = state.weights[1];
-    let diffHtml = '';
-    if (w && firstWeight && d > 1) {
-      const diff = (w - firstWeight).toFixed(1);
-      const cls = diff <= 0 ? 'loss' : 'gain';
-      const sign = diff <= 0 ? '' : '+';
-      diffHtml = `<div class="weight-diff ${cls}">${sign}${diff}</div>`;
-    }
+<!-- How It Works -->
+<section class="section" id="how-it-works">
+  <h2 class="section-title">The 15-Day Egg Diet Plan</h2>
+  <p class="section-subtitle">A structured three-phase approach combining egg fasting with low-carb eating for effective results.</p>
+  <div class="phases">
+    <div class="phase-card">
+      <div class="phase-number">1</div>
+      <h3>Egg Fast</h3>
+      <div class="days">Days 1-5</div>
+      <p>Eat 6-9 eggs per day with 15g fat (butter or mayo) per egg. Up to 30g cheese per egg is optional. Eat every 3-4 hours to keep your metabolism going.</p>
+    </div>
+    <div class="phase-card">
+      <div class="phase-number">2</div>
+      <h3>Strict LCHF</h3>
+      <div class="days">Days 6-10</div>
+      <p>Switch to strict low-carb, high-fat eating. Max 10-20g carbs per day. Focus on protein and healthy fats. Eat when hungry, avoid sugar and starch.</p>
+    </div>
+    <div class="phase-card">
+      <div class="phase-number">3</div>
+      <h3>Egg Fast</h3>
+      <div class="days">Days 11-15</div>
+      <p>Return to the egg fast for the final push. Same rules as Phase 1. Finish strong and see your total results on the weight chart.</p>
+    </div>
+  </div>
+</section>
 
-    const card = document.createElement('div');
-    card.className = 'weight-input-card';
-    card.dataset.phase = phase;
-    card.innerHTML = `
-      <div class="weight-day-label">Day ${d}</div>
-      <input type="number" class="weight-input" step="0.1" min="30" max="300"
-             placeholder="kg" value="${w || ''}"
-             onchange="updateWeight(${d}, this.value)"
-             onfocus="this.select()">
-      ${diffHtml}
-    `;
-    grid.appendChild(card);
-  }
-}
+<!-- FAQ -->
+<section class="section" id="faq">
+  <h2 class="section-title">Frequently Asked Questions</h2>
+  <p class="section-subtitle">Common questions about the egg diet and the tracker app.</p>
+  <div class="faq-list">
+    <article class="faq-item">
+      <h3>What is the egg diet?</h3>
+      <p>The egg diet (also known as the egg fast) is a short-term, low-carb diet centered around eggs, butter, and cheese. It's popular in the keto community as a way to break through weight loss plateaus. This 15-day plan alternates egg fasting with strict LCHF (low-carb, high-fat) eating.</p>
+    </article>
+    <article class="faq-item">
+      <h3>How many eggs do I eat per day?</h3>
+      <p>During egg fast phases (days 1-5 and 11-15), you eat 6 to 9 eggs per day, each with about 15 grams of fat from butter or mayo. You can also add up to 30 grams of cheese per egg. During the LCHF phase (days 6-10), you eat a variety of low-carb foods.</p>
+    </article>
+    <article class="faq-item">
+      <h3>Is this app free?</h3>
+      <p>Yes! Egg Diet Tracker is completely free to use. There are no subscriptions, in-app purchases, or ads. Just a simple tool to help you track your 15-day challenge.</p>
+    </article>
+    <article class="faq-item">
+      <h3>Where is my data stored?</h3>
+      <p>All your data is stored locally on your device. Nothing is sent to any server. Your meal tracking and weight data stays completely private on your phone or browser.</p>
+    </article>
+    <article class="faq-item">
+      <h3>Can I do the egg diet for more than 15 days?</h3>
+      <p>The 15-day plan is designed as a short-term reset. It's not intended as a long-term diet. After completing the 15 days, most people transition to a regular low-carb or balanced eating plan. Always consult your doctor before starting any new diet.</p>
+    </article>
+    <article class="faq-item">
+      <h3>Is the egg diet safe?</h3>
+      <p>For most healthy adults, the egg diet is safe as a short-term plan. However, it's restrictive and not suitable for everyone. If you have any health conditions, are pregnant, or are on medication, consult your healthcare provider before starting.</p>
+    </article>
+  </div>
+</section>
 
-function updateWeight(day, value) {
-  if (value && !isNaN(value)) {
-    state.weights[day] = parseFloat(value);
-  } else {
-    delete state.weights[day];
-  }
-  saveState();
-  renderWeightInputs();
-  updateChart();
-}
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Ready to Start Your Egg Diet?</h2>
+  <p>Join thousands of people tracking their 15-day egg diet challenge.</p>
+  <a href="/app" class="cta-button large">Start Tracking Free</a>
+</section>
 
-// === CHART ===
-let chartInstance = null;
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="/app">App</a>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/support">Support</a>
+  </div>
+  <p>&copy; 2025 Egg Diet Tracker. All rights reserved.</p>
+</footer>
 
-function updateChart() {
-  const ctx = document.getElementById('weightChart').getContext('2d');
-  const labels = [];
-  const data = [];
-  const colors = [];
-
-  for (let d = 1; d <= 15; d++) {
-    labels.push(`Day ${d}`);
-    data.push(state.weights[d] || null);
-    const phase = getPhaseForDay(d);
-    colors.push(phase === 'egg' ? '#F5A623' : '#7CB342');
-  }
-
-  if (chartInstance) chartInstance.destroy();
-
-  chartInstance = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        label: 'Weight (kg)',
-        data,
-        borderColor: '#FF6B6B',
-        backgroundColor: 'rgba(255,107,107,0.1)',
-        borderWidth: 3,
-        pointBackgroundColor: colors,
-        pointBorderColor: '#fff',
-        pointBorderWidth: 2,
-        pointRadius: 6,
-        pointHoverRadius: 9,
-        fill: true,
-        tension: 0.3,
-        spanGaps: true,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#4A3728',
-          titleFont: { family: 'Fredoka', size: 14 },
-          bodyFont: { family: 'Nunito', size: 13 },
-          padding: 12,
-          cornerRadius: 12,
-          callbacks: {
-            label: (ctx) => ctx.parsed.y ? `${ctx.parsed.y} kg` : 'No data',
-          }
-        }
-      },
-      scales: {
-        x: {
-          grid: { display: false },
-          ticks: {
-            font: { family: 'Fredoka', size: 11 },
-            color: '#7A6555',
-          }
-        },
-        y: {
-          grid: { color: 'rgba(0,0,0,0.05)' },
-          ticks: {
-            font: { family: 'Fredoka', size: 11 },
-            color: '#7A6555',
-            callback: (v) => `${v} kg`,
-          }
-        }
-      }
-    }
-  });
-}
-
-// === NAVIGATION ===
-function showPhase(phaseId) {
-  document.querySelectorAll('.phase-section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById(phaseId).classList.add('active');
-
-  const phaseMap = { phase1: '1', phase2: '2', phase3: '3', weight: 'weight', rules: 'rules' };
-  document.querySelector(`.nav-tab[data-phase="${phaseMap[phaseId]}"]`).classList.add('active');
-
-  if (phaseId === 'weight') {
-    setTimeout(() => updateChart(), 100);
-  }
-}
-
-// === START DATE ===
-function initStartDate() {
-  const input = document.getElementById('startDate');
-  if (state.startDate) {
-    input.value = state.startDate;
-  }
-  input.addEventListener('change', () => {
-    state.startDate = input.value;
-    saveState();
-    renderAll();
-  });
-}
-
-// === RESET ===
-function resetAll() {
-  if (confirm('Reset all your egg-cellent progress? This cannot be undone!')) {
-    state = defaultState();
-    saveState();
-    renderAll();
-  }
-}
-
-// === FLOATING EGGS ===
-function createFloatingEggs() {
-  const container = document.getElementById('floatingEggs');
-  const emojis = ['🥚', '🍳', '🐣', '🐔', '🧈'];
-  for (let i = 0; i < 12; i++) {
-    const egg = document.createElement('div');
-    egg.className = 'floating-egg';
-    egg.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-    egg.style.left = `${Math.random() * 100}%`;
-    egg.style.fontSize = `${1.2 + Math.random() * 1.5}rem`;
-    egg.style.animationDuration = `${15 + Math.random() * 20}s`;
-    egg.style.animationDelay = `${-Math.random() * 20}s`;
-    container.appendChild(egg);
-  }
-}
-
-// === INIT ===
-createFloatingEggs();
-initStartDate();
-renderAll();
-</script>
 </body>
 </html>
